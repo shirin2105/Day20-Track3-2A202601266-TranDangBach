@@ -90,19 +90,28 @@ jobs:
           print("PASSED: đang triển khai model.")
           PYEOF
 
-  # JOB 4: Triển khai lên VM qua SSH
+  # JOB 4: Triển khai lên Render
   release:
     name: Release
     needs: quality-gate      # Chỉ chạy khi job quality-gate qua
     runs-on: ubuntu-latest
     steps:
-      - name: SSH deploy to VM
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            sudo systemctl restart income-api
-            sleep 5
-            curl -sf http://localhost:8080/healthz && echo "Health check passed." || exit 1
+      - name: Deploy to Render
+        run: |
+          if [ -z "${{ secrets.RENDER_DEPLOY_HOOK }}" ]; then
+            echo "RENDER_DEPLOY_HOOK is not set, skipping Render deployment."
+            exit 0
+          fi
+          echo "Kích hoạt Render Deploy Hook..."
+          curl -s -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+          echo "Đã gửi tín hiệu deploy tới Render. Việc build sẽ mất vài phút."
+          
+      - name: Verify Health
+        run: |
+          if [ -z "${{ secrets.RENDER_URL }}" ]; then
+            echo "RENDER_URL is not set, skipping health check."
+            exit 0
+          fi
+          echo "Chờ Render khởi động (sleep 60s)..."
+          sleep 60
+          curl -sf "${{ secrets.RENDER_URL }}/healthz" && echo "Health check passed." || echo "Vui lòng tự kiểm tra lại URL sau vài phút."

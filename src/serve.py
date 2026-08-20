@@ -11,12 +11,23 @@ MODEL_KEY = "artifacts/current/model.joblib"
 MODEL_PATH = os.path.expanduser("~/models/model.joblib")
 
 
+from google.oauth2 import service_account
+import json
+
 def download_model():
     """Tải model.joblib từ cloud storage về máy khi server khởi động."""
     if not ARTIFACT_BUCKET:
         print("ARTIFACT_BUCKET not set. Skipping model download.")
         return
-    client = storage.Client()
+    
+    creds_json = os.environ.get("GCP_CREDENTIALS_JSON")
+    if creds_json:
+        creds_info = json.loads(creds_json)
+        creds = service_account.Credentials.from_service_account_info(creds_info)
+        client = storage.Client(credentials=creds)
+    else:
+        client = storage.Client()
+
     bucket = client.bucket(ARTIFACT_BUCKET)
     blob = bucket.blob(MODEL_KEY)
     os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
