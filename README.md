@@ -157,8 +157,8 @@ Học viên nộp:
 
 ## Báo cáo lỗi (Failure mode) & Giải pháp (Workaround)
 
-**Sinh viên thực hiện:** [Điền tên của bạn]  
-**Mã số sinh viên:** [Điền mã sinh viên]  
+**Sinh viên thực hiện:** Trần Đăng Bách  
+**Mã số sinh viên:** 2A202601266  
 
 Trong quá trình thực hiện Lab 20 (CI/CD cho hệ thống), em đã thiết lập thành công toàn bộ luồng Github Actions bao gồm Unit test, Train, Quality Gate và Release (CD lên nền tảng Render). Tuy nhiên, em đã gặp phải một failure mode đặc thù liên quan đến hạ tầng Cloud:
 
@@ -174,3 +174,13 @@ Do thiếu tài nguyên thẻ tín dụng, em đã thực hiện giải pháp th
 3. **Local Mocking trên Production (Render):** Em đã cấu hình lại `src/serve.py`. Tại sự kiện `startup` của FastAPI, nếu server không tải được Model từ GCS (do không tồn tại GCS), hệ thống sẽ fallback bằng cách khởi tạo nhanh một Dummy Model trực tiếp trên bộ nhớ RAM. Nhờ vậy, server vẫn khởi động thành công, các API `/healthz` và `/score` tiếp tục phản hồi ổn định (`{"status": "ok"}`).
 
 Nhờ tư duy linh hoạt này, em vẫn minh chứng được tính đúng đắn của vòng lặp CI/CD từ GitHub đến Production mà không bị giới hạn bởi hạ tầng thanh toán.
+
+### 3. Minh chứng kết quả
+
+**Kết quả GitHub Actions (Pass 100%):**
+
+![GitHub Actions](docs/assets/github_actions.png)
+
+**Kết quả Webhook Server /healthz:**
+
+![Render Healthz](docs/assets/render_healthz.png)
