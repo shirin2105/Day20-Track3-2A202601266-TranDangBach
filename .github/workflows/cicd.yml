@@ -21,7 +21,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt numpy pandas scikit-learn fastapi uvicorn pydantic google-cloud-storage pytest dvc dvc-gs mlflow pyyaml joblib
       - name: Run tests
         run: pytest tests/test_train.py -v
 
@@ -38,7 +38,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt numpy pandas scikit-learn fastapi uvicorn pydantic google-cloud-storage pytest dvc dvc-gs mlflow pyyaml joblib
 
       - name: Authenticate to Cloud Storage
         run: |
