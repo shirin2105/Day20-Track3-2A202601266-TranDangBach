@@ -11,6 +11,7 @@ from sklearn.metrics import accuracy_score, f1_score
 
 F1_THRESHOLD = 0.65
 
+
 def train(
     params: dict,
     data_path: str = "data/train_batch1.csv",
@@ -28,7 +29,7 @@ def train(
     # TODO 2: Tách đặc trưng và nhãn.
     X_train = df_train.drop(columns=["target"])
     y_train = df_train["target"]
-    
+
     X_eval = df_eval.drop(columns=["target"])
     y_eval = df_eval["target"]
 
@@ -64,6 +65,7 @@ def train(
 
         # TODO 10: Trả về f1
         return float(f1)
+
 
 if __name__ == "__main__":
     with open("params.yaml") as f:

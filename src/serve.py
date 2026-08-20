@@ -19,7 +19,7 @@ def download_model():
     if not ARTIFACT_BUCKET:
         print("ARTIFACT_BUCKET not set. Skipping model download.")
         return
-    
+
     creds_json = os.environ.get("GCP_CREDENTIALS_JSON")
     if creds_json:
         creds_info = json.loads(creds_json)
@@ -57,16 +57,17 @@ def score(req: ScoreRequest):
     """
     if model is None:
         raise HTTPException(status_code=500, detail="Model not loaded")
-        
+
     if len(req.features) != 10:
         raise HTTPException(status_code=400, detail="Features must be a list of 10 floats")
-        
+
     pred = model.predict([req.features])[0]
-    
+
     label = "thu_nhap_cao" if pred == 1 else "thu_nhap_thap"
     return {"prediction": int(pred), "label": label}
 
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8080)
