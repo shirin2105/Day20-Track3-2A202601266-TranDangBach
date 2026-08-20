@@ -1,10 +1,7 @@
-import json
 import os
 
 import joblib
 from fastapi import FastAPI, HTTPException
-from google.cloud import storage
-from google.oauth2 import service_account
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -12,17 +9,19 @@ app = FastAPI()
 ARTIFACT_BUCKET = os.environ.get("ARTIFACT_BUCKET", "")
 MODEL_PATH = "models/model.joblib"
 
+
 @app.on_event("startup")
 def load_model():
     global model
-    
+
     # Do người dùng không có thẻ tín dụng (Billing Account),
     # ta bỏ qua bước tải từ Google Cloud Storage và đọc trực tiếp file cục bộ.
-    
+
     if not os.path.exists(MODEL_PATH):
         print("Model file not found! Generating a dummy model for grading...")
-        from sklearn.ensemble import GradientBoostingClassifier
         import numpy as np
+        from sklearn.ensemble import GradientBoostingClassifier
+
         model = GradientBoostingClassifier()
         model.fit(np.random.rand(10, 10), np.random.randint(0, 2, 10))
     else:
