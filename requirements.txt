@@ -1,0 +1,13 @@
+mlflow
+pandas
+PyYAML
+scikit-learn
+joblib
+fastapi
+uvicorn
+pydantic
+google-cloud-storage
+pytest
+numpy
+dvc
+dvc-gs
