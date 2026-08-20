@@ -1,8 +1,11 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from google.cloud import storage   # thay bằng SDK của provider đã chọn
-import joblib
+import json
 import os
+
+import joblib
+from fastapi import FastAPI, HTTPException
+from google.cloud import storage
+from google.oauth2 import service_account
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -10,9 +13,6 @@ ARTIFACT_BUCKET = os.environ.get("ARTIFACT_BUCKET", "")
 MODEL_KEY = "artifacts/current/model.joblib"
 MODEL_PATH = os.path.expanduser("~/models/model.joblib")
 
-
-from google.oauth2 import service_account
-import json
 
 def download_model():
     """Tải model.joblib từ cloud storage về máy khi server khởi động."""
@@ -36,10 +36,7 @@ def download_model():
 
 
 download_model()
-if os.path.exists(MODEL_PATH):
-    model = joblib.load(MODEL_PATH)
-else:
-    model = None
+model = joblib.load(MODEL_PATH) if os.path.exists(MODEL_PATH) else None
 
 
 class ScoreRequest(BaseModel):

@@ -1,7 +1,9 @@
-import os
 import json
+import os
+
 import numpy as np
 import pandas as pd
+
 from src.train import train
 
 FEATURE_NAMES = [
@@ -30,7 +32,11 @@ def _make_temp_data(tmp_path):
 
 def test_train_returns_float(tmp_path):
     train_path, eval_path = _make_temp_data(tmp_path)
-    f1 = train({"n_estimators": 10, "learning_rate": 0.1, "max_depth": 2}, data_path=train_path, eval_path=eval_path)
+    f1 = train(
+        {"n_estimators": 10, "learning_rate": 0.1, "max_depth": 2},
+        data_path=train_path,
+        eval_path=eval_path
+    )
     
     assert isinstance(f1, float)
     assert 0.0 <= f1 <= 1.0
