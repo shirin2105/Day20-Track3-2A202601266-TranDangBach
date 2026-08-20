@@ -22,8 +22,11 @@ jobs:
           python-version: "3.11"
       - name: Install dependencies
         run: pip install -r requirements.txt numpy pandas scikit-learn fastapi uvicorn pydantic google-cloud-storage pytest dvc dvc-gs mlflow pyyaml joblib
-      - name: Run tests
-        run: pytest tests/test_train.py -v
+      - name: Debug and Run tests
+        run: |
+          pip list
+          python -c "import numpy; print(numpy.__version__)"
+          python -m pytest tests/test_train.py -v
 
   # JOB 2: Huấn luyện trên dữ liệu thật, upload mô hình lên cloud storage
   train:
