@@ -31,7 +31,17 @@ dev = [
   "pytest-cov>=5.0",
   "ruff>=0.5",
   "mypy>=1.10",
-  "pre-commit>=3.7"
+  "pre-commit>=3.7",
+  "numpy",
+  "pandas",
+  "scikit-learn",
+  "mlflow",
+  "fastapi",
+  "pydantic",
+  "uvicorn",
+  "google-cloud-storage",
+  "joblib",
+  "PyYAML"
 ]
 
 [project.scripts]
